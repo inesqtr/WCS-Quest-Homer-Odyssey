@@ -8,7 +8,8 @@ class SignUp extends Component {
             lastname: '',
             email: '',
             password: '',
-            passwordbis: ''
+            passwordbis: '',
+            flash: ""
         }
         this.updateDataField = this.updateDataField.bind(this);
         this.handleSubmit = this.handleSubmit.bind(this);
@@ -21,7 +22,20 @@ class SignUp extends Component {
     }
 
     handleSubmit = (e) => {
-        console.log(this.state);
+        fetch("/auth/signup",
+            {
+                method: 'POST',
+                headers: new Headers({
+                    'Content-Type': 'application/json'
+                }),
+                body: JSON.stringify(this.state),
+            })
+            .then(res => res.json())
+            .then(
+                res => this.setState({ "flash": res.flash }),
+                err => this.setState({ "flash": err.flash })
+            );
+
         e.preventDefault();
     }
 
@@ -83,16 +97,7 @@ class SignUp extends Component {
                     <div className="form-data">
                         <input type="submit" value="Submit" />
                     </div>
-
-
-
-
-
-
-
-
                 </form>
-
             </div>
         )
     }
