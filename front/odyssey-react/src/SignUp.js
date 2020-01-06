@@ -1,4 +1,11 @@
 import React, { Component } from 'react';
+import { TextField, Button, Snackbar } from '@material-ui/core';
+import MuiAlert from '@material-ui/lab/Alert';
+
+function Alert(props) {
+    return <MuiAlert elevation={6} variant="filled" {...props} />;
+  }
+
 
 class SignUp extends Component {
     constructor(props) {
@@ -9,11 +16,13 @@ class SignUp extends Component {
             email: '',
             password: '',
             passwordbis: '',
-            flash: ""
+            flash: "",
+            open: false
         }
         this.updateDataField = this.updateDataField.bind(this);
         this.handleSubmit = this.handleSubmit.bind(this);
     }
+
 
     updateDataField = (e) => {
         this.setState({
@@ -32,7 +41,7 @@ class SignUp extends Component {
             })
             .then(res => res.json())
             .then(
-                res => this.setState({ "flash": res.flash }),
+                res => this.setState({ "flash": res.flash, "open":true }),
                 err => this.setState({ "flash": err.flash })
             );
 
@@ -40,63 +49,66 @@ class SignUp extends Component {
     }
 
 
+    handleClose = (e, reason) => {
+        if (reason === 'clickaway') {
+            return;
+        }
+        this.setState({ "open": false })
+    }
+
+
 
 
     render() {
-        const { name, lastname, email, password, passwordbis } = this.state;
+        const { name, lastname, email, password, passwordbis, open } = this.state;
 
         return (
-            <div className="Form">
+            <div>
                 <h1>{JSON.stringify(this.state, 1, 1)}</h1>
-                <form onSubmit={this.handleSubmit}>
-                    <div className="form-data">
-                        <label>Your Name:</label>
-                        <input
-                            type="text"
-                            name="name"
-                            onChange={this.updateDataField}
-                            value={name}
-                        />
-                    </div>
-                    <div className="form-data">
-                        <label>Your lastname:</label>
-                        <input
-                            type="text"
-                            name="lastname"
-                            onChange={this.updateDataField}
-                            value={lastname}
-                        />
-                    </div>
-                    <div className="form-data">
-                        <label>Your Email:</label>
-                        <input
-                            type="email"
-                            name="email"
-                            onChange={this.updateDataField}
-                            value={email}
-                        />
-                    </div>
-                    <div className="form-data">
-                        <label>Your Password:</label>
-                        <input
-                            type="password"
-                            name="password"
-                            onChange={this.updateDataField}
-                            value={password}
-                        />
-                    </div>
-                    <div className="form-data">
-                        <label>Repeat Your Password:</label>
-                        <input
-                            type="password"
-                            name="passwordbis"
-                            onChange={this.updateDataField}
-                            value={passwordbis}
-                        />
-                    </div>
-                    <div className="form-data">
-                        <input type="submit" value="Submit" />
-                    </div>
+                <form noValidate autoComplete="off" onSubmit={this.handleSubmit}>
+                    <TextField
+                        label="Your Name"
+                        type="text"
+                        name="name"
+                        onChange={this.updateDataField}
+                        value={name}
+                    />
+                    <TextField
+                        label="Your Lastname"
+                        type="text"
+                        name="lastname"
+                        onChange={this.updateDataField}
+                        value={lastname}
+                    />
+                    <TextField
+                        label="Your Email"
+                        type="email"
+                        name="email"
+                        onChange={this.updateDataField}
+                        value={email}
+                    />
+                    <TextField
+                        label="Your Password"
+                        type="password"
+                        name="password"
+                        onChange={this.updateDataField}
+                        value={password}
+                    />
+                    <TextField
+                        label="Password Copy"
+                        type="password"
+                        name="passwordbis"
+                        onChange={this.updateDataField}
+                        value={passwordbis}
+                    />
+                    <Button variant="contained" color="primary">
+                        SUBMIT
+                    </Button>
+                    <Snackbar open={open} autoHideDuration={6000} onClose={this.handleClose}>
+                        <Alert onClose={this.handleClose} color="success">
+                            This is a success message!
+                        </Alert>
+                    </Snackbar>
                 </form>
             </div>
         )
