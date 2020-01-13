@@ -2,16 +2,13 @@ import React, { Component } from 'react';
 import { Link, withRouter } from 'react-router-dom';
 import { TextField, Button, Snackbar } from '@material-ui/core';
 
-class SignUp extends Component {
+class SignIn extends Component {
     constructor(props) {
         super(props);
         this.state = {
-            name: '',
-            lastname: '',
             email: '',
             password: '',
-            passwordbis: '',
-            flash: "",
+            flash: '',
             open: false
         }
         this.updateDataField = this.updateDataField.bind(this);
@@ -26,7 +23,7 @@ class SignUp extends Component {
     }
 
     handleSubmit = (e) => {
-        fetch("/auth/signup",
+        fetch("/auth/signin",
             {
                 method: 'POST',
                 headers: new Headers({
@@ -41,8 +38,7 @@ class SignUp extends Component {
             );
 
         e.preventDefault();
-
-        this.props.history.push('/');
+        this.props.history.push('/profile');
     }
 
     handleClickSnack = () => {
@@ -66,21 +62,18 @@ class SignUp extends Component {
 
 
     render() {
-        const { name, lastname, email, password, passwordbis, flash, open } = this.state;
+        const { email, password, open, flash } = this.state;
 
         return (
             <div>
                 <div>
-                    <Link to='/'>Sign In here</Link>
+                    <Link to='/signup'>Sign Up here</Link>
                 </div>
-                <h1>Sign Up!</h1>
+                <h1>Sign In!</h1>
                 <form noValidate autoComplete="off" onSubmit={this.handleSubmit}>
-                    <TextField required id="standard-required" label="Your Name" type="text" name="name" onChange={this.updateDataField} value={name} />
-                    <TextField label="Your Lastname" type="text" name="lastname" onChange={this.updateDataField} value={lastname} />
                     <TextField label="Your Email" type="email" name="email" onChange={this.updateDataField} value={email} />
                     <TextField label="Your Password" type="password" name="password" onChange={this.updateDataField} value={password}
                     />
-                    <TextField label="Password Copy" type="password" name="passwordbis" onChange={this.updateDataField} value={passwordbis} />
                     <Button type="submit" variant="contained" color="primary" onClick={this.handleClickSnack}>
                         SUBMIT
                     </Button>
@@ -97,4 +90,4 @@ class SignUp extends Component {
     }
 }
 
-export default withRouter(SignUp);
+export default withRouter(SignIn);
